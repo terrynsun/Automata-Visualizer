@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  cursor: move;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+.accept {
+  stroke: #004F00;
+  stroke-width: 2.5px;
+}
+
+.initial {
+  stroke: #003F87;
+  stroke-width: 2.5px;
+}
+
+.link {
+  stroke: #000000;
+  fill: none;
+  stroke-width: 2px;
+}
+
+#svg {
+  user-select: none;
+  -moz-user-select: none; 
+  -webkit-user-select: none; 
+  -ms-user-select:none;
+  cursor: pointer;
+}
+
+</style>
+<body>
+<div id="svg">
+<script src="./d3.v2.min.js"></script>
+<script src="./dfa.js"></script>
+<script src="./vis-dfa.js"></script>
+<script src="./jquery-2.0.3.min.js"></script>
+</div>
+
+<br> Enter a string to input into the DFA.
+<br> <input type="text" class="string"/>
+<br> <input type="submit" class="animate" value="Animate!" />
+</form>
+<script>
+function process() {
+    var text = $(".string").val().split("");
+    //console.log(a);
+    animate_string(a, text);
+};
+
+$( ".animate" ).click(process);
+</script>
+</body>
