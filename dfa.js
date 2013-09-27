@@ -22,25 +22,43 @@ function DFA (lang, states, initial) {
   this.states = states;
   this.inital = initial;
   this.current = initial;
+  this.prev = [];
 };
 
-DFA.prototype.select = function(s) {
-  delay++;
+DFA.prototype.select = function(s, delay) {
+  for(var k = 0; k < this.prev.length; k++){
+    this.svg.select(".n" + this.prev[k])
+      .transition()
+      .delay(1000*delay-1)
+      .duration(1000)
+      .style("fill", "white");
+  }
 
-  this.svg.select(".n" + prev)
-    .transition()
-    .delay(1000*delay)
-    .duration(1000)
-    .style("fill", "white");
+  for(var k = 0; k < s.length; k++) {
+    this.svg.select(".n" + s[k])
+      .transition()
+      .delay(1000*delay)
+      .duration(1000)
+      .style("fill", "steelblue");
+  }
 
-  this.svg.select(".n" + s)
-    .transition()
-    .delay(1000*delay)
-    .duration(1000)
-    .style("fill", "steelblue");
-
-  prev = s;
+  this.prev = s;
+  console.log(this.prev);
 };
+
+DFA.prototype.animate = function(s) {
+  var delay = 1;
+
+  this.select([this.current.i], 0);
+  this.store_string(s);
+
+  var len = s.length;
+  for(j = 0; j < len; j++) {
+    this.next();
+    this.select([this.current.i], delay);
+    delay++;
+  }
+}
 
 DFA.prototype.readSingleLetter = function(letter) {
   if(this.current.getNext(letter))
@@ -51,6 +69,8 @@ DFA.prototype.next = function() {
   if(this.str != [])
     this.readSingleLetter(this.str[0]);
   this.str.splice(0,1);
+  console.log("next");
+  console.log(this.str);
 };
 
 DFA.prototype.store_string = function(s) {
@@ -75,7 +95,7 @@ DFA.prototype.getD3 = function() {
 
     alphabet = Object.keys(current_state.transitions);
     delta = current_state.transitions;
-    for (letter in alphabet){
+    for (letter in alphabet){ //iterate through transition function
       var new_link = {};
       new_link["source"] = current_state.i;
       new_link["target"] = delta[letter].i;
