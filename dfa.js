@@ -43,7 +43,6 @@ DFA.prototype.select = function(s, delay) {
   }
 
   this.prev = s;
-  console.log(this.prev);
 };
 
 DFA.prototype.animate = function(s) {
@@ -69,8 +68,6 @@ DFA.prototype.next = function() {
   if(this.str != [])
     this.readSingleLetter(this.str[0]);
   this.str.splice(0,1);
-  console.log("next");
-  console.log(this.str);
 };
 
 DFA.prototype.store_string = function(s) {
@@ -162,7 +159,7 @@ DFA.prototype.generateSVG = function(nodes, links) {
           .selectAll("text")
               .data(nodes)
           .enter().append("text")
-              .text(function(d) { return d.name })
+              .text(function(d) { return d.name; })
           .call(force.drag);
 
   var text_links = svg.append("g")
@@ -170,7 +167,7 @@ DFA.prototype.generateSVG = function(nodes, links) {
           .selectAll("text")
               .data(links)
           .enter().append("text")
-              .text(function(d) { return d.letter; })
+              .text(function(d) { if (d.letter == '\0') return 'ε'; return d.letter; })
           .call(force.drag);
 
   function tick() {
