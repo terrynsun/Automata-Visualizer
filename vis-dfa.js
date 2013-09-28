@@ -23,7 +23,7 @@ function animate_string(dfa, s) {
 
 function process() { 
   select(1);
-  console.log("Hello World!") 
-};
+  console.log("Hello World!") ;
+}
 
 a.generateSVG(j[0], j[1]);
