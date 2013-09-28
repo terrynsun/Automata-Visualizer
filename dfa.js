@@ -173,6 +173,7 @@ DFA.prototype.generateSVG = function() {
   var d = this.getD3(),
       nodes = d[0],
       links = d[1];
+  console.log(nodes);
 
   var width = 300,
       height = 300;
@@ -226,6 +227,17 @@ DFA.prototype.generateSVG = function() {
                  .attr("fill", "white")
                .call(force.drag);
 
+  var accepts = svg.append("g")
+                 .attr("class", "node")
+               .selectAll("circle")
+                 .data(nodes)
+               .enter().append("circle")
+                 .attr("r", 14)
+                 .attr("class", "accepts")
+                 .attr("fill", "white")
+                 .attr("stroke-width", function(d) { if(d.accept) return 1; return 0; } )
+               .call(force.drag);
+
   var text_node = svg.append("g")
               .attr("class", "text_label")
           .selectAll("text")
@@ -259,6 +271,9 @@ DFA.prototype.generateSVG = function() {
 
     node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
+
+    accepts.attr("cx", function(d) { return d.x; })
+           .attr("cy", function(d) { return d.y; });
 
     ends.attr("cx", function(d) {
       var dx = d.target.x - d.source.x,
