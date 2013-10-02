@@ -32,12 +32,12 @@ NFA.prototype.readSingleLetter = function(letter) {
         new_currents.push(next[j]);
     }
   }
-  for(var k = 0; k < new_currents.length; k++) {
-    var state = new_currents[k];
-    if(state.getNext('\0')) {
-      var nexts = state.getNext('\0');
-      for(var j = 0; j < nexts.length; j++)
-        new_currents.push(nexts[j]);
+  for(var a = 0; a < new_currents.length; a++) {
+    var new_state = new_currents[a];
+    if(new_state.getNext('\0')) {
+      var nexts = new_state.getNext('\0');
+      for(var b = 0; b < nexts.length; b++)
+        new_currents.push(nexts[b]);
     }
   }
   this.current = new_currents;
@@ -67,7 +67,7 @@ NFA.prototype.animate = function(s) {
   for(var j = 0; j < len; j++) {
     this.next();
     var currIndices = [];
-    for (var k = 0; k < this.current.length; k++)
+    for (k = 0; k < this.current.length; k++)
       currIndices.push(this.current[k].i);
     
     this.select(currIndices, delay);
@@ -118,4 +118,43 @@ NFA.prototype.getD3 = function() {
     }
   }
   return [nodes, links];
+};
+
+/*****************************************************************************
+ *
+ * Functions on N/DFAs
+ *
+ ****************************************************************************/
+
+function joinStates(a, b) {
+  var c = a.concat([]);
+  for(var k = 0; k < b.length; k++) {
+    var state = b[k];
+    state.i = k + a.length;
+    if(state.name == k) state.name = b.i;
+    c.push(state);
+  }
+  return c;
+}
+
+function join(a, b) {
+  var c = a.concat([]);
+  for(var k = 0; k < b.length; k++) {
+    if(c.indexOf(b[k]) == -1)
+      c.push(b[k]);
+  }
+  return c;
+}
+
+var concat = function(a, b) {
+  var accepts = a.getAcceptStates(),
+      init = b.initial,
+      lang = join(a.lang, b.lang),
+      states = joinStates(a.states, b.states);
+  var c = new NFA(lang, states, a.initial);
+  for (var k = 0; k < accepts.length; k++){
+    accepts[k].transitions['\0'] = [init];
+    accepts[k].accept = false;
+  }
+  return c;
 };

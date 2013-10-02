@@ -41,10 +41,11 @@
 <body>
 <div id="svg">
 <script src="./d3.v2.min.js"></script>
+<script src="./jquery-2.0.3.min.js"></script>
+
 <script src="./dfa.js"></script>
 <script src="./nfa.js"></script>
 <script src="./vis-nfa.js"></script>
-<script src="./jquery-2.0.3.min.js"></script>
 </div>
 
 <br> Enter a string to input into the NFA.
@@ -52,10 +53,9 @@
 <br> <input type="submit" class="animate" value="Animate!" />
 </form>
 <script>
-function process() {
+function process(c) {
     var text = $(".string").val().split("");
-    //console.log(a);
-    a.animate(text);
+    concat.animate(text);
 };
 
 $( ".animate" ).click(process);

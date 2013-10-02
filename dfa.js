@@ -48,7 +48,7 @@ DFA.prototype.select = function(s, delay) {
       .transition()
       .delay(1000*delay)
       .duration(1000)
-      .style("fill", "steelblue");
+      .style("fill", "lightsteelblue");
   }
 
   this.prev = s;
@@ -141,10 +141,10 @@ DFA.prototype.getD3 = function() {
     if(current_state.name)
       new_node.name = current_state.name;
     else
-      new_node.name = j;
+      new_node.name = current_state.i;
     new_node.index = current_state.i;
     new_node.accept = current_state.accept;
-    new_node.initial = j === 0;
+    new_node.initial = current_state.i === 0;
     nodes.push(new_node);
 
     alphabet = Object.keys(current_state.transitions);
@@ -173,7 +173,6 @@ DFA.prototype.generateSVG = function() {
   var d = this.getD3(),
       nodes = d[0],
       links = d[1];
-  console.log(nodes);
 
   var width = 300,
       height = 300;
@@ -228,13 +227,14 @@ DFA.prototype.generateSVG = function() {
                .call(force.drag);
 
   var accepts = svg.append("g")
-                 .attr("class", "node")
+                 .attr("class", "accepts")
                .selectAll("circle")
                  .data(nodes)
                .enter().append("circle")
                  .attr("r", 14)
                  .attr("class", "accepts")
-                 .attr("fill", "white")
+                 .attr("fill", "none")
+                 .attr("stroke", "#000000")
                  .attr("stroke-width", function(d) { if(d.accept) return 1; return 0; } )
                .call(force.drag);
 
@@ -310,16 +310,4 @@ DFA.prototype.generateSVG = function() {
     text_links.attr("y", function(d) { return (d.source.y + d.target.y)/2; });
   }
   this.svg = svg;
-};
-
-/*****************************************************************************
- *
- * Functions on DFAs
- *
- ****************************************************************************/
-
-var concatenate = function(a, b) {
-  var accepts = a.getAcceptStates();
-  for(var k = 0; k < accepts.length; k++) {
-  }
 };

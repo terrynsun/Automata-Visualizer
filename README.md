@@ -8,15 +8,13 @@ CURRENTLY:
 - DFAs
 - NFAs
 - Basic Visualization
+- Basic operations (concatenation)
 
 TODO:
 - Visualization
-  + marker-ends
   + better path drawing
   + better delay calculation
-- DFAs
-  + check for validity
-- NFAs
+- check for validity
 - User input
   + pause
   + sanitation/check for validity
