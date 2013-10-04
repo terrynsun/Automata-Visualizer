@@ -55,7 +55,8 @@
 <script>
 function process(c) {
     var text = $(".string").val().split("");
-    concat.animate(text);
+    nfa.reset();
+    nfa.animate(text);
 };
 
 $( ".animate" ).click(process);

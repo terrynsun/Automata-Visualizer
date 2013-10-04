@@ -17,6 +17,6 @@ p1.transitions = { };
 //a = new NFA([0,1,2,3,4,5], [q0, q1, q2], q0);
 var b = new NFA([0,1], [p0, p1], p0);
 
-var concat = concat(a,b);
+var nfa = union(a,b);
 
-concat.generateSVG();
+nfa.generateSVG();
