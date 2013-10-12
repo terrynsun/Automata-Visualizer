@@ -49,6 +49,7 @@ NFA.prototype.hasEpsilonTransitions = function() {
   }
 };
 
+/* Follow all epsilon transitions leading from current states. */
 NFA.prototype.followEpsilons = function() {
   for(var a = 0; a < this.current.length; a++) {
     var new_state = this.current[a];

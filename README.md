@@ -8,13 +8,16 @@ CURRENTLY:
 - DFAs
 - NFAs
 - Basic Visualization
-- Basic operations (concatenation)
+- Basic operations (concatenation, union)
+- Regex, parsing only
 
 TODO:
-- Visualization
+- visualization
   + better path drawing
   + better delay calculation
+    + iteration in place of absolute delay calculation
 - check for validity
-- User input
+- user input
   + pause
   + sanitation/check for validity
+- regular Expressions

@@ -255,45 +255,63 @@ DFA.prototype.generateSVG = function() {
           .call(force.drag);
 
   function tick() {
-    // draw paths
+    /* Set node positions. */
+    node.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+
+    /* Annotate accept states. */
+    accepts.attr("cx", function(d) { return d.x; })
+           .attr("cy", function(d) { return d.y; });
+
+    /* Draw paths (transitions) between nodes */
     paths.attr("d", function(d) {
       var dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
           dr = Math.sqrt(dx * dx + dy * dy);
 
       if(d.type == "self")
-        return "M" + d.source.x + "," + d.source.y + " A" + "500,500" + ",0,0,1," + (d.target.x + 50) + "," + (d.target.y + 20);
+        return "M" + d.source.x + "," + (d.source.y + 10) + " A" + "20,20" + 
+                       ",0,1,0," + (d.target.x) + "," + (d.target.y + 15);
       else if(d.type == "single")
         return "M" + d.source.x + "," + d.source.y + " L" + d.target.x + "," + d.target.y;
-      else
+      else //doubly linked
         return "M" + d.source.x + "," + d.source.y + " A" + dr + "," + dr + ",0,0,1," + d.target.x + "," + d.target.y;
     });
 
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-
-    accepts.attr("cx", function(d) { return d.x; })
-           .attr("cy", function(d) { return d.y; });
-
+    /* Draw circle-ends to mark direction of transition. */
     ends.attr("cx", function(d) {
+      if(d.type == "self")
+          return d.target.x; 
+
       var dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
-          angle = Math.atan(dy/dx),
-          r = 20;
-          c = r*Math.cos(angle);
+          r = 20,
+          angle = Math.atan(dy/dx);
+          
+      if(d.type == "bi")
+          angle = angle + 50;
+
+      var c = r*Math.cos(angle);
 
       if(d.source.x > d.target.x)
         return d.target.x + c;
       else
         return d.target.x - c;
-      });
+    });
 
     ends.attr("cy", function(d) { 
+      if(d.type == "self")
+          return d.target.y + 20; 
+
       var dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
           angle = Math.atan(dy/dx),
-          r = 20;
+          r = 20,
           c = r*Math.sin(angle);
+
+      console.log(angle);
+      if(d.type == "bi")
+          angle = angle + 50;
 
       if(d.source.x > d.target.x)
         return d.target.y + c;
@@ -301,13 +319,27 @@ DFA.prototype.generateSVG = function() {
         return d.target.y - c;
       });
 
+    /* Draw text to mark each node. */
     text_node.attr("x", function(d) { return d.x-5; })
-            .attr("y", function(d) { return d.y+5; });
+             .attr("y", function(d) { return d.y+5; });
 
+    /* Draw text to indicate letter of transition. */
     text_links.attr("x", function(d) {
-      var dir = (d.source.x > d.target.x) ? 10 : -10;
-      return (d.source.x + d.target.x)/2 + dir; });
-    text_links.attr("y", function(d) { return (d.source.y + d.target.y)/2; });
+      if(d.type == "self") {
+        return d.source.x - 50;
+      }
+      else {
+        var dir = (d.source.x > d.target.x) ? 10 : -10;
+        return (d.source.x + d.target.x)/2 + dir; 
+      }
+    });
+
+    text_links.attr("y", function(d) {
+      if(d.type == "self") {
+        return d.source.y + 35;
+      }
+      return (d.source.y + d.target.y)/2; 
+    });
   }
   this.svg = svg;
 };
