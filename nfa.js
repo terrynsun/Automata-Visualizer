@@ -141,6 +141,7 @@ NFA.prototype.getD3 = function() {
  *
  ****************************************************************************/
 
+/* Join two arrays of states, renumbering each state sequentially.. */
 function joinTwoStates(a, b) {
   var c = a.concat([]);
   for(var k = 0; k < b.length; k++) {
@@ -152,6 +153,7 @@ function joinTwoStates(a, b) {
   return c;
 }
 
+/* Join two arrays of states. */
 function joinStates(lst) {
   var joined = lst[0].concat([]);
   for(k = 1; k < lst.length; k++) {
@@ -160,6 +162,7 @@ function joinStates(lst) {
   return joined;
 }
 
+/* Join two arrays. */
 function join(a, b) {
   var c = a.concat([]);
   for(var k = 0; k < b.length; k++) {
@@ -190,3 +193,13 @@ var union = function(a, b) {
   var result = new NFA(lang, allStates, new_init);
   return result;
 };
+
+/*****************************************************************************
+ *
+ * Regular expressions constructions
+ *
+ ****************************************************************************/
+
+// ?
+// +
+// *

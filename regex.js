@@ -16,7 +16,6 @@ function tokenize(str) {
     tuple = getNextToken(str);
     list.push(tuple[0]);
     str = tuple[1];
-    console.log('tokenize: ' + str);
   }
   return list;
 }
@@ -35,8 +34,27 @@ function getNextToken(str) {
   var token = [],
       lead = str[0],
       times;
-  console.log('getNextToken: ' + str);
   if(lead == '(') {
+    var possibleStrings = [];
+    while(str[0] != ')' && str.length > 0) {
+      str = str.slice(1);
+      innerToken = tokenize(str);
+      possibleStrings.push(innerToken[0]);
+      console.log('innerToken: ' + innerToken);
+      while(isLetter(str[0]) || isQuantifier(str[0])) {
+        str = str.slice(1);
+      }
+    }
+    if(str[0] == ')')
+      str = str.slice(1); //slice ')'
+    if(isQuantifier(str[0])) {
+      times = str[0];  // the next char in next can't be a letter
+      str = str.slice(1);
+    }
+    else {
+      times = '1';
+    }
+    token = [ possibleStrings, times];
   }
   else if(isLetter(lead)) {
     var leadingLetters = getLeadingLetters(str);
@@ -75,7 +93,6 @@ function getLeadingLetters(str) {
     if(str.length > 1 && !isLetter(str[1])){
       chunk += str[0];
       str = str.slice(1);
-      console.log('getLeadingLetters: ' + str);
     }
     /* Take the final letter without quantifier. */
     else if(str.length <= 1 && isLetter(str[0])) {
@@ -95,5 +112,5 @@ function isQuantifier(c) {
   return c == '?' || c == '+' || c == "*";
 }
 
-var s = 'ab(cd+)e';
+var s = process.argv[2] || 'abcde';
 console.log(tokenize(s));

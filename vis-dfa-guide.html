@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<div id="svg">
+<script src="./style.css"></script>
+<script src="./d3.v2.min.js"></script>
+<script src="./dfa.js"></script>
+<script src="./nfa.js"></script>
+<script src="./vis-nfa.js"></script>
+<script src="./jquery-2.0.3.min.js"></script>
+</div>
+
+<br> Enter a string to input into the NFA.
+<br> <input type="text" class="string"/>
+<br> <input type="submit" class="animate" value="Animate!" />
+</form>
+
+A deterministic finite automata (DFA) or finite state machine is a machine that
+takes in letters from a set alphabet and changes states accordingly. By
+definition, it is: - deterministic: it can only hold one state at a time -
+finite: it cannot be defined to have infinite states.
+
+Finite automata are useful when you only have a very limited amount of memory to
+work with. It saves its state, but does not need to keep track of everything
+that has already happened.
+
+<script>
+function process() {
+    var text = $(".string").val().split("");
+    a.animate(text);
+};
+
+
+$( ".animate" ).click(process);
+</script>
+</body>
